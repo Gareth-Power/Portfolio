@@ -35,7 +35,7 @@
 
   /* ============ HERO ============ */
   .hero {
-    padding: 72px 22px 100px;
+    padding: 40px 22px 100px;
     text-align: center;
     max-width: 980px;
     margin: 0 auto;
@@ -45,7 +45,7 @@
     align-items: center;
     gap: 10px;
     padding: 10px 16px;
-    margin: 0 auto 22px;
+    margin: 20px auto 0;
     border-radius: 999px;
     border: 1px solid var(--line);
     background: rgba(255, 255, 255, 0.9);
@@ -125,8 +125,8 @@
     margin: 0 auto;
     padding: 0 22px 80px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 60px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 40px;
   }
   .value {
     text-align: center;
@@ -348,9 +348,13 @@
   .value:nth-child(2) { animation-delay: 0.42s; }
   .value:nth-child(3) { animation-delay: 0.48s; }
 
+  @media (max-width: 980px) {
+    .values { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
   /* ============ RESPONSIVE ============ */
   @media (max-width: 760px) {
-    .hero { padding: 48px 22px 64px; }
+    .hero { padding: 28px 22px 64px; }
     .values { grid-template-columns: 1fr; gap: 36px; padding-bottom: 56px; }
     #tools-grid { grid-template-columns: 1fr; }
     .tool-thumb {
@@ -368,15 +372,15 @@
          src="./SaIL.png"
          alt="SaIL"
          onerror="this.style.display='none';">
-    <div class="hero-byline">
-      <span>Tools developed by Gareth Power</span>
-      <a href="mailto:gareth.power@nhs.net">gareth.power@nhs.net</a>
-    </div>
     <h1>Small tools.<br><span class="light">Built for simulation.</span></h1>
-    <p class="hero-sub">Tools developed by Gareth Power. A growing collection of free, open-source tools made for NHS trusts and non-profit simulation centres.</p>
+    <p class="hero-sub">A growing collection of free, open-source tools made for NHS trusts and non-profit simulation centres.</p>
     <div class="hero-actions">
       <a href="#tools" class="btn btn-primary">Explore the tools <span class="arrow">→</span></a>
       <a href="https://github.com/Gareth-Power" target="_blank" rel="noopener" class="btn btn-ghost">View on GitHub</a>
+    </div>
+    <div class="hero-byline">
+      <span>Get in touch</span>
+      <a href="mailto:gareth.power@nhs.net">gareth.power@nhs.net</a>
     </div>
   </header>
 
@@ -403,6 +407,13 @@
       <h3>Open source</h3>
       <p>Every tool is on GitHub. Use it, learn from it, adapt it for your own setting.</p>
     </div>
+    <div class="value">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 8h16v10H4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Commercial</h3>
+      <p>Contact us if you want to incorporate these tools or ideas into your own products or commercial offerings.</p>
+    </div>
   </section>
 
   <!-- TOOLS -->
@@ -423,7 +434,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
-      <span>SaIL · Simulation and Interactive Learning · Tools developed by Gareth Power</span>
+      <span>SaIL · Simulation and Interactive Learning</span>
       <span><a href="mailto:gareth.power@nhs.net">gareth.power@nhs.net</a></span>
     </div>
   </footer>
