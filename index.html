@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaIL — Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbfbfd;
+    --surface: #ffffff;
+    --ink: #1d1d1f;
+    --ink-2: #424245;
+    --mute: #86868b;
+    --line: #d2d2d7;
+    --line-soft: #e8e8ed;
+    --accent: #f022b2;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.47;
+    min-height: 100vh;
+    letter-spacing: -0.003em;
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding: 72px 22px 100px;
+    text-align: center;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .hero-byline {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    margin: 0 auto 22px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .hero-byline a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .hero-logo {
+    height: clamp(112px, 16vw, 168px);
+    width: auto;
+    display: block;
+    margin: 0 auto 28px;
+  }
+  .hero h1 {
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  .hero h1 .light { font-weight: 300; color: var(--ink-2); }
+  .hero-sub {
+    font-size: clamp(18px, 1.8vw, 21px);
+    font-weight: 400;
+    line-height: 1.42;
+    color: var(--ink-2);
+    max-width: 640px;
+    margin: 0 auto;
+    letter-spacing: -0.01em;
+  }
+  .hero-actions {
+    margin-top: 36px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 22px;
+    border-radius: 980px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.15s, background 0.2s, color 0.2s, border-color 0.2s;
+    letter-spacing: -0.01em;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .btn-primary:hover { background: #000; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn .arrow {
+    transition: transform 0.2s;
+    font-size: 16px;
+    line-height: 1;
+  }
+  .btn:hover .arrow { transform: translateX(2px); }
+
+  /* ============ VALUES / FEATURE STRIP ============ */
+  .values {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 22px 80px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+  }
+  .value {
+    text-align: center;
+  }
+  .value-icon {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .value-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.5;
+  }
+  .value h3 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-bottom: 6px;
+  }
+  .value p {
+    font-size: 14px;
+    color: var(--mute);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+  }
+
+  /* ============ TOOLS SECTION ============ */
+  .tools-section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 22px 120px;
+  }
+
+  .section-head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .section-head h2 {
+    font-size: clamp(32px, 4.5vw, 48px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .section-head p {
+    font-size: 17px;
+    color: var(--mute);
+    letter-spacing: -0.005em;
+  }
+
+  #tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .tool {
+    background: var(--surface);
+    border-radius: 22px;
+    padding: 36px;
+    text-decoration: none;
+    color: var(--ink);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+    border: 1px solid var(--line-soft);
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+  }
+  .tool:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  }
+  .tool-thumb {
+    width: calc(100% + 72px);
+    height: 168px;
+    margin: -36px -36px 24px;
+    background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
+    border-bottom: 1px solid var(--line-soft);
+    overflow: hidden;
+  }
+  .tool-thumb img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.2);
+    transform-origin: center;
+  }
+  .tool-name {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .tool-desc {
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    flex: 1;
+  }
+  .tool-desc.muted {
+    color: var(--mute);
+    font-style: italic;
+  }
+  .tool-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .tool-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--mute);
+    letter-spacing: -0.005em;
+  }
+  .lang-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+  .lang-JavaScript { background: #f1c40f; }
+  .lang-HTML       { background: #e34c26; }
+  .lang-CSS        { background: #2965f1; }
+  .lang-Python     { background: #3572A5; }
+  .lang-TypeScript { background: #3178c6; }
+  .lang-Shell      { background: #89e051; }
+  .tool-cta {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: -0.005em;
+    transition: gap 0.25s;
+  }
+  .tool:hover .tool-cta { gap: 8px; }
+
+  /* ============ STATUS / LOADING ============ */
+  .status {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--mute);
+    font-size: 15px;
+  }
+  .spinner {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .status.error a { color: var(--accent); text-decoration: none; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--line-soft);
+    padding: 36px 22px;
+    background: var(--bg);
+  }
+  .footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--mute);
+    letter-spacing: -0.005em;
+  }
+  .footer-inner a {
+    color: var(--mute);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-inner a:hover { color: var(--ink); }
+
+  /* ============ ENTRY ANIMATION ============ */
+  .tool {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  }
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero h1, .hero-sub, .hero-logo, .hero-actions, .value {
+    opacity: 0;
+    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  }
+  .hero-logo       { animation-delay: 0.05s; }
+  .hero h1         { animation-delay: 0.12s; }
+  .hero-sub        { animation-delay: 0.2s; }
+  .hero-actions    { animation-delay: 0.28s; }
+  .value:nth-child(1) { animation-delay: 0.36s; }
+  .value:nth-child(2) { animation-delay: 0.42s; }
+  .value:nth-child(3) { animation-delay: 0.48s; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 760px) {
+    .hero { padding: 48px 22px 64px; }
+    .values { grid-template-columns: 1fr; gap: 36px; padding-bottom: 56px; }
+    #tools-grid { grid-template-columns: 1fr; }
+    .tool-thumb {
+      width: calc(100% + 72px);
+      height: 152px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <img class="hero-logo"
+         src="./SaIL.png"
+         alt="SaIL"
+         onerror="this.style.display='none';">
+    <div class="hero-byline">
+      <span>Tools developed by Gareth Power</span>
+      <a href="mailto:gareth.power@nhs.net">gareth.power@nhs.net</a>
+    </div>
+    <h1>Small tools.<br><span class="light">Built for simulation.</span></h1>
+    <p class="hero-sub">Tools developed by Gareth Power. A growing collection of free, open-source tools made for NHS trusts and non-profit simulation centres.</p>
+    <div class="hero-actions">
+      <a href="#tools" class="btn btn-primary">Explore the tools <span class="arrow">→</span></a>
+      <a href="https://github.com/Gareth-Power" target="_blank" rel="noopener" class="btn btn-ghost">View on GitHub</a>
+    </div>
+  </header>
+
+  <!-- VALUES -->
+  <section class="values" id="about">
+    <div class="value">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.5-7 11-7 11z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Built for the NHS</h3>
+      <p>Made by simulation educators at Guy's & St Thomas', for the people teaching clinical skills every day.</p>
+    </div>
+    <div class="value">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Free to use</h3>
+      <p>No licences, no per-seat fees. Free for NHS trusts and non-profit simulation institutions.</p>
+    </div>
+    <div class="value">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Open source</h3>
+      <p>Every tool is on GitHub. Use it, learn from it, adapt it for your own setting.</p>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="tools-section" id="tools">
+    <div class="section-head">
+      <h2>The tools.</h2>
+      <p>Each one solves a small, specific problem.</p>
+    </div>
+
+    <div id="tools-grid">
+      <div class="status">
+        <div class="spinner"></div>
+        Loading from GitHub…
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span>SaIL · Simulation and Interactive Learning · Tools developed by Gareth Power</span>
+      <span><a href="mailto:gareth.power@nhs.net">gareth.power@nhs.net</a></span>
+    </div>
+  </footer>
+
+<script>
+  const USERNAME = 'Gareth-Power';
+  const API = `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated&type=owner`;
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+  }
+
+  function getThumbUrl(repo) {
+    const branch = repo.default_branch || 'main';
+    return `https://raw.githubusercontent.com/${USERNAME}/${repo.name}/${branch}/Thumb.png`;
+  }
+
+  async function loadRepos() {
+    const grid = document.getElementById('tools-grid');
+    try {
+      const res = await fetch(API);
+      if (!res.ok) throw new Error(`GitHub responded ${res.status}`);
+      const repos = await res.json();
+
+      if (!Array.isArray(repos) || repos.length === 0) {
+        grid.innerHTML = '<div class="status">No tools published yet.</div>';
+        return;
+      }
+
+      const own = repos.filter(r => !r.fork);
+      const displayed = own.length ? own : repos;
+
+      grid.innerHTML = '';
+      displayed.forEach((repo, i) => {
+        const a = document.createElement('a');
+        a.className = 'tool';
+        a.href = repo.html_url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.style.animationDelay = `${0.05 + i * 0.06}s`;
+
+        const langClass = repo.language ? `lang-${repo.language.replace(/[^a-zA-Z0-9]/g, '')}` : '';
+        const thumbUrl = getThumbUrl(repo);
+        const descHTML = repo.description
+          ? `<p class="tool-desc">${escapeHtml(repo.description)}</p>`
+          : `<p class="tool-desc muted">More details on GitHub.</p>`;
+
+        a.innerHTML = `
+          <div class="tool-thumb">
+            <img src="${thumbUrl}" alt="${escapeHtml(repo.name)} thumbnail" loading="lazy"
+                 onerror="this.parentElement.style.display='none';">
+          </div>
+          <h3 class="tool-name">${escapeHtml(repo.name)}</h3>
+          ${descHTML}
+          <div class="tool-footer">
+            <div class="tool-meta">
+              ${repo.language ? `<span class="lang-dot ${langClass}"></span>${escapeHtml(repo.language)}` : '<span>—</span>'}
+              <span style="color: var(--line); margin: 0 4px;">·</span>
+              <span>Updated ${formatDate(repo.updated_at)}</span>
+            </div>
+            <span class="tool-cta">Open <span>→</span></span>
+          </div>
+        `;
+        grid.appendChild(a);
+      });
+    } catch (err) {
+      console.error(err);
+      grid.innerHTML = `<div class="status error">
+        Couldn't reach GitHub.<br>
+        <a href="https://github.com/${USERNAME}" target="_blank">Browse directly →</a>
+      </div>`;
+    }
+  }
+
+  loadRepos();
+</script>
+
+</body>
+</html>
