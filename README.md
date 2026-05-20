@@ -1,3 +1,7 @@
+<p align="center">
+	<img src="./Thumb.png" alt="SaIL portfolio preview" width="320">
+</p>
+
 # SaIL Portfolio
 
 A small portfolio page for SaIL tools developed by Gareth Power.
