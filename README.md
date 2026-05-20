@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="./Thumb.png" alt="SaIL portfolio preview" width="320">
+	<img src="./Thumb.png" alt="SaIL portfolio preview" width="640">
 </p>
 
 # SaIL Portfolio
