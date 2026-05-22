@@ -193,7 +193,6 @@
     background: var(--surface);
     border-radius: 22px;
     padding: 36px;
-    text-decoration: none;
     color: var(--ink);
     position: relative;
     overflow: hidden;
@@ -270,17 +269,41 @@
   .lang-Python     { background: #3572A5; }
   .lang-TypeScript { background: #3178c6; }
   .lang-Shell      { background: #89e051; }
+  .tool-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
   .tool-cta {
     font-size: 13px;
     font-weight: 500;
-    color: var(--accent);
+    color: var(--ink);
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     letter-spacing: -0.005em;
-    transition: gap 0.25s;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.9);
   }
-  .tool:hover .tool-cta { gap: 8px; }
+  .tool-cta.primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+  .tool-cta:hover {
+    transform: translateY(-1px);
+    border-color: var(--ink);
+  }
+  .tool-cta.primary:hover {
+    background: #000;
+    border-color: #000;
+  }
 
   /* ============ STATUS / LOADING ============ */
   .status {
@@ -357,6 +380,15 @@
     .hero { padding: 28px 22px 64px; }
     .values { grid-template-columns: 1fr; gap: 36px; padding-bottom: 56px; }
     #tools-grid { grid-template-columns: 1fr; }
+    .tool-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .tool-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
     .tool-thumb {
       width: calc(100% + 72px);
       height: 152px;
@@ -462,6 +494,17 @@
     return `https://raw.githubusercontent.com/${USERNAME}/${repo.name}/${branch}/Thumb.png`;
   }
 
+  function getHomepageUrl(repo) {
+    if (!repo.homepage) return '';
+
+    try {
+      const url = new URL(repo.homepage);
+      return /^https?:$/.test(url.protocol) ? url.href : '';
+    } catch {
+      return '';
+    }
+  }
+
   async function loadRepos() {
     const grid = document.getElementById('tools-grid');
     try {
@@ -479,20 +522,22 @@
 
       grid.innerHTML = '';
       displayed.forEach((repo, i) => {
-        const a = document.createElement('a');
-        a.className = 'tool';
-        a.href = repo.html_url;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.style.animationDelay = `${0.05 + i * 0.06}s`;
+        const card = document.createElement('article');
+        card.className = 'tool';
+        card.style.animationDelay = `${0.05 + i * 0.06}s`;
 
         const langClass = repo.language ? `lang-${repo.language.replace(/[^a-zA-Z0-9]/g, '')}` : '';
         const thumbUrl = getThumbUrl(repo);
+        const homepageUrl = getHomepageUrl(repo);
         const descHTML = repo.description
           ? `<p class="tool-desc">${escapeHtml(repo.description)}</p>`
           : `<p class="tool-desc muted">More details on GitHub.</p>`;
+        const appButtonHTML = homepageUrl
+          ? `<a class="tool-cta primary" href="${escapeHtml(homepageUrl)}" target="_blank" rel="noopener">App</a>`
+          : '';
+        const repoButtonHTML = `<a class="tool-cta" href="${escapeHtml(repo.html_url)}" target="_blank" rel="noopener">Repo</a>`;
 
-        a.innerHTML = `
+        card.innerHTML = `
           <div class="tool-thumb">
             <img src="${thumbUrl}" alt="${escapeHtml(repo.name)} thumbnail" loading="lazy"
                  onerror="this.parentElement.style.display='none';">
@@ -505,10 +550,13 @@
               <span style="color: var(--line); margin: 0 4px;">·</span>
               <span>Updated ${formatDate(repo.updated_at)}</span>
             </div>
-            <span class="tool-cta">Open <span>→</span></span>
+            <div class="tool-actions">
+              ${appButtonHTML}
+              ${repoButtonHTML}
+            </div>
           </div>
         `;
-        grid.appendChild(a);
+        grid.appendChild(card);
       });
     } catch (err) {
       console.error(err);
