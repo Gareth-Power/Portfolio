@@ -257,6 +257,19 @@
     color: var(--mute);
     letter-spacing: -0.005em;
   }
+  .license-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .license-icon {
+    width: 13px;
+    height: 13px;
+    stroke: #d4a017;
+    fill: none;
+    stroke-width: 1.8;
+    flex: 0 0 auto;
+  }
   .lang-dot {
     width: 8px;
     height: 8px;
@@ -505,6 +518,16 @@
     }
   }
 
+  function getLicenseLabel(repo) {
+    if (!repo.license) return 'No license';
+
+    if (repo.license.spdx_id && repo.license.spdx_id !== 'NOASSERTION') {
+      return repo.license.spdx_id;
+    }
+
+    return repo.license.name || 'No license';
+  }
+
   async function loadRepos() {
     const grid = document.getElementById('tools-grid');
     try {
@@ -526,9 +549,9 @@
         card.className = 'tool';
         card.style.animationDelay = `${0.05 + i * 0.06}s`;
 
-        const langClass = repo.language ? `lang-${repo.language.replace(/[^a-zA-Z0-9]/g, '')}` : '';
         const thumbUrl = getThumbUrl(repo);
         const homepageUrl = getHomepageUrl(repo);
+        const licenseLabel = getLicenseLabel(repo);
         const descHTML = repo.description
           ? `<p class="tool-desc">${escapeHtml(repo.description)}</p>`
           : `<p class="tool-desc muted">More details on GitHub.</p>`;
@@ -546,7 +569,7 @@
           ${descHTML}
           <div class="tool-footer">
             <div class="tool-meta">
-              ${repo.language ? `<span class="lang-dot ${langClass}"></span>${escapeHtml(repo.language)}` : '<span>—</span>'}
+              <span class="license-meta"><svg class="license-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.75 2.75h5.5l3 3v7a1 1 0 0 1-1 1h-7.5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1z" stroke-linejoin="round"/><path d="M9.25 2.75v3h3" stroke-linejoin="round"/><path d="M5.25 8h5.5M5.25 10.5h4" stroke-linecap="round"/></svg>${escapeHtml(licenseLabel)}</span>
               <span style="color: var(--line); margin: 0 4px;">·</span>
               <span>Updated ${formatDate(repo.updated_at)}</span>
             </div>
