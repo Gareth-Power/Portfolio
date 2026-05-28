@@ -257,18 +257,24 @@
     color: var(--mute);
     letter-spacing: -0.005em;
   }
-  .lang-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--ink);
+  .license-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #c69200;
+    flex: 0 0 auto;
   }
-  .lang-JavaScript { background: #f1c40f; }
-  .lang-HTML       { background: #e34c26; }
-  .lang-CSS        { background: #2965f1; }
-  .lang-Python     { background: #3572A5; }
-  .lang-TypeScript { background: #3178c6; }
-  .lang-Shell      { background: #89e051; }
+  .license-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: #ffd54a;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
   .tool-actions {
     display: flex;
     align-items: center;
@@ -296,11 +302,20 @@
     border-color: var(--accent);
     color: var(--bg);
   }
+  .tool-cta.download {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
   .tool-cta:hover {
     transform: translateY(-1px);
     border-color: var(--ink);
   }
   .tool-cta.primary:hover {
+    background: #d61a9d;
+    border-color: #d61a9d;
+  }
+  .tool-cta.download:hover {
     background: #d61a9d;
     border-color: #d61a9d;
   }
@@ -505,6 +520,21 @@
     }
   }
 
+  async function getLatestReleaseUrl(repo) {
+    if (!repo.releases_url) return '';
+
+    try {
+      const latestUrl = repo.releases_url.replace('{/id}', '/latest');
+      const res = await fetch(latestUrl);
+      if (!res.ok) return '';
+
+      const release = await res.json();
+      return typeof release.html_url === 'string' ? release.html_url : '';
+    } catch {
+      return '';
+    }
+  }
+
   async function loadRepos() {
     const grid = document.getElementById('tools-grid');
     try {
@@ -519,21 +549,32 @@
 
       const own = repos.filter(r => !r.fork);
       const displayed = own.length ? own : repos;
+      const reposWithReleaseUrls = await Promise.all(
+        displayed.map(async repo => ({
+          ...repo,
+          latestReleaseUrl: await getLatestReleaseUrl(repo)
+        }))
+      );
 
       grid.innerHTML = '';
-      displayed.forEach((repo, i) => {
+      reposWithReleaseUrls.forEach((repo, i) => {
         const card = document.createElement('article');
         card.className = 'tool';
         card.style.animationDelay = `${0.05 + i * 0.06}s`;
 
-        const langClass = repo.language ? `lang-${repo.language.replace(/[^a-zA-Z0-9]/g, '')}` : '';
         const thumbUrl = getThumbUrl(repo);
         const homepageUrl = getHomepageUrl(repo);
+        const licenseLabel = repo.license?.spdx_id && repo.license.spdx_id !== 'NOASSERTION'
+          ? repo.license.spdx_id
+          : 'No license';
         const descHTML = repo.description
           ? `<p class="tool-desc">${escapeHtml(repo.description)}</p>`
           : `<p class="tool-desc muted">More details on GitHub.</p>`;
+        const downloadButtonHTML = repo.latestReleaseUrl
+          ? `<a class="tool-cta download" href="${escapeHtml(repo.latestReleaseUrl)}" target="_blank" rel="noopener">Download</a>`
+          : '';
         const appButtonHTML = homepageUrl
-          ? `<a class="tool-cta primary" href="${escapeHtml(homepageUrl)}" target="_blank" rel="noopener">App</a>`
+          ? `<a class="tool-cta primary" href="${escapeHtml(homepageUrl)}" target="_blank" rel="noopener">WebApp</a>`
           : '';
         const repoButtonHTML = `<a class="tool-cta" href="${escapeHtml(repo.html_url)}" target="_blank" rel="noopener">Repo</a>`;
 
@@ -546,11 +587,18 @@
           ${descHTML}
           <div class="tool-footer">
             <div class="tool-meta">
-              ${repo.language ? `<span class="lang-dot ${langClass}"></span>${escapeHtml(repo.language)}` : '<span>—</span>'}
-              <span style="color: var(--line); margin: 0 4px;">·</span>
-              <span>Updated ${formatDate(repo.updated_at)}</span>
+              <span class="license-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M8 3h8l4 4v10a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"></path>
+                  <path d="M16 3v5h5"></path>
+                  <path d="M8 12h8"></path>
+                  <path d="M8 16h5"></path>
+                </svg>
+              </span>
+              <span>${escapeHtml(licenseLabel)}</span>
             </div>
             <div class="tool-actions">
+              ${downloadButtonHTML}
               ${appButtonHTML}
               ${repoButtonHTML}
             </div>
