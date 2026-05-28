@@ -539,7 +539,27 @@
     const grid = document.getElementById('tools-grid');
     try {
       const res = await fetch(API);
-      if (!res.ok) throw new Error(`GitHub responded ${res.status}`);
+      if (!res.ok) {
+        let reason = '';
+        if (res.status === 403) {
+          reason = 'Possible reasons: Rate limit exceeded, missing/invalid authentication, or CORS restrictions.';
+        } else if (res.status === 404) {
+          reason = 'Resource not found. Check the API URL or username.';
+        } else if (res.status === 401) {
+          reason = 'Unauthorized. Authentication may be required.';
+        } else {
+          reason = 'Unexpected error.';
+        }
+        let errorDetails = '';
+        try {
+          const errorBody = await res.json();
+          if (errorBody && errorBody.message) {
+            errorDetails = `GitHub message: ${errorBody.message}`;
+          }
+        } catch {}
+        console.error(`GitHub API request failed: ${res.status} ${res.statusText}. ${reason} ${errorDetails}`);
+        throw new Error(`GitHub responded ${res.status}. ${reason} ${errorDetails}`);
+      }
       const repos = await res.json();
 
       if (!Array.isArray(repos) || repos.length === 0) {
@@ -607,7 +627,10 @@
         grid.appendChild(card);
       });
     } catch (err) {
-      console.error(err);
+      console.error('GitHub API error:', err);
+      if (err && err.message && err.message.includes('403')) {
+        console.error('Likely causes: Rate limit exceeded, missing/invalid authentication, or CORS restrictions.');
+      }
       grid.innerHTML = `<div class="status error">
         Couldn't reach GitHub.<br>
         <a href="https://github.com/${USERNAME}" target="_blank">Browse directly →</a>
