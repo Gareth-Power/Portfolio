@@ -4,9 +4,9 @@
 
 # SaIL Portfolio
 
-A small portfolio page for SaIL tools developed by Gareth Power.
+A small portfolio page for SaIL tools and resources.
 
-This site lists GitHub repositories, shows each project's thumbnail, and links visitors to the source code.
+This site lists GitHub repositories with thumbnails, and links to apps/repos/downloads automatically if present.
 
 ## Files
 
