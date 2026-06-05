@@ -4,6 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SaIL Tools</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RLM7WQL0GC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // Default to cookieless measurement (no analytics/ad storage).
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    analytics_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
+
+  gtag('js', new Date());
+  gtag('set', 'ads_data_redaction', true);
+  gtag('config', 'G-RLM7WQL0GC', {
+    anonymize_ip: true,
+    client_storage: 'none',
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+    transport_type: 'beacon'
+  });
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
